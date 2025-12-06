@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Flatcer – Design 3D e Filosofia</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Oggetti 3D minimal per la vita quotidiana e un mondo di libri e filosofia pratica." />
+  <style>
+    :root {
+      --bg: #111111;
+      --bg-alt: #181818;
+      --text: #f5f5f5;
+      --muted: #b3b3b3;
+      --accent: #b5e61d;
+      --card: #1f1f1f;
+      --border: #2a2a2a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      background: radial-gradient(circle at top, #1a1a1a 0, #050505 60%);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.3));
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .nav {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1.2rem 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .logo-mark {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 16px rgba(181,230,29,0.6);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .nav-links a {
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.3rem;
+      height: 1px;
+      width: 0;
+      background: var(--accent);
+      transition: width 0.18s ease-out;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #050505;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 24px rgba(181,230,29,0.55);
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 32px rgba(181,230,29,0.85);
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .section {
+      padding: 4.5rem 1.4rem;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.2fr);
+      gap: 3rem;
+      align-items: center;
+      padding-top: 3.5rem;
+      padding-bottom: 4rem;
+    }
+
+    .hero-kicker {
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.3rem, 3.2vw + 1rem, 3.4rem);
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .hero-title span {
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      margin-top: 1.4rem;
+      color: var(--muted);
+      max-width: 32rem;
+      font-size: 0.98rem;
+    }
+
+    .hero-actions {
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn-primary {
+      padding: 0.9rem 1.8rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: var(--accent);
+      color: #050505;
+      font-weight: 600;
+      font-size: 0.95rem;
+      box-shadow: 0 0 28px rgba(181,230,29,0.7);
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1.5px);
+      box-shadow: 0 0 36px rgba(181,230,29,0.9);
+    }
+
+    .btn-ghost {
+      padding: 0.85rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: border-color 0.12s ease-out, color 0.12s ease-out, background 0.12s ease-out;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--text);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .hero-note {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .hero-note span {
+      color: var(--accent);
+    }
+
+    .hero-visual {
+      position: relative;
+      padding: 1.4rem;
+      border-radius: 1.3rem;
+      background: radial-gradient(circle at top left, #202020, #050505 65%);
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow:
+        0 26px 70px rgba(0,0,0,0.85),
+        0 0 120px rgba(181,230,29,0.25);
+      overflow: hidden;
+    }
+
+    .hero-product {
+      aspect-ratio: 4 / 3;
+      border-radius: 1rem;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(181,230,29,0.25), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(255,255,255,0.08), transparent 55%),
+        linear-gradient(145deg, #2a2a2a, #111111);
+      border: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .hero-block {
+      width: 54%;
+      height: 46%;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #f5f5f5, #cfcfcf);
+      box-shadow:
+        0 18px 40px rgba(0,0,0,0.6),
+        0 0 40px rgba(0,0,0,0.7);
+      position: relative;
+      transform: translateY(-4px) rotate(-4deg);
+    }
+
+    .hero-strip {
+      position: absolute;
+      inset: 12%;
+      border-radius: 999px;
+      border: 2px solid #111111;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      mix-blend-mode: multiply;
+    }
+
+    .hero-strip-inner {
+      width: 140%;
+      height: 100%;
+      background-image: repeating-linear-gradient(
+        90deg,
+        #111111 0,
+        #111111 28px,
+        #b5e61d 28px,
+        #b5e61d 88px
+      );
+      animation: slide 18s linear infinite;
+    }
+
+    @keyframes slide {
+      to { transform: translateX(-30%); }
+    }
+
+    .hero-tag {
+      position: absolute;
+      right: 1rem;
+      bottom: 1rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      background: rgba(0,0,0,0.8);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .hero-tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(181,230,29,1);
+    }
+
+    .hero-meta {
+      margin-top: 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .hero-meta-left span {
+      display: inline-block;
+      margin-right: 0.9rem;
+    }
+
+    .hero-meta-right {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .hero-dot-small {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #444;
+    }
+
+    /* Section titles */
+    .section-title {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.7rem;
+    }
+
+    .section-heading {
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    /* Benefits */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    .benefit-card {
+      padding: 1.4rem;
+      border-radius: 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+
+    .benefit-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .benefit-title {
+      font-size: 0.98rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .benefit-text {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* Products */
+    .products-section {
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      background: radial-gradient(circle at top, #151515, #050505 60%);
+    }
+
+    .products-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .products-note {
+      font-size: 0.85rem;
+      color: var(--muted);
+      max-width: 19rem;
+      text-align: right;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.4rem;
+    }
+
+    .product-card {
+      border-radius: 1.1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .product-thumb {
+      aspect-ratio: 4 / 3;
+      border-radius: 0.9rem;
+      background: linear-gradient(145deg, #333, #121212);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-pill {
+      position: absolute;
+      top: 0.7rem;
+      right: 0.7rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      background: rgba(0,0,0,0.8);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: var(--muted);
+    }
+
+    .product-title {
+      font-size: 0.98rem;
+    }
+
+    .product-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      min-height: 2.4em;
+    }
+
+    .product-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.3rem;
+    }
+
+    .product-price {
+      font-size: 0.9rem;
+    }
+
+    .product-price span {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .product-btn {
+      padding: 0.55rem 1.1rem;
+      border-radius: 999px;
+      border: none;
+      background: var(--accent);
+      color: #050505;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+      box-shadow: 0 0 22px rgba(181,230,29,0.7);
+    }
+
+    .product-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 28px rgba(181,230,29,1);
+    }
+
+    .products-cta {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Books & philosophy */
+    .books-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 2.3rem;
+      align-items: center;
+    }
+
+    .books-tag {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .books-title {
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .books-text {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 1.1rem;
+      max-width: 30rem;
+    }
+
+    .books-list {
+      list-style: none;
+      margin-bottom: 1.4rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .books-list li::before {
+      content: "–";
+      margin-right: 0.4rem;
+      color: var(--accent);
+    }
+
+    .books-card {
+      border-radius: 1.2rem;
+      background: radial-gradient(circle at top, #222, #050505 60%);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 1.4rem;
+      align-items: center;
+    }
+
+    .book-spine {
+      height: 160px;
+      border-radius: 0.9rem;
+      background:
+        repeating-linear-gradient(
+          180deg,
+          #f5f5f5 0,
+          #f5f5f5 14px,
+          #dcdcdc 14px,
+          #dcdcdc 16px
+        );
+      box-shadow:
+        0 10px 30px rgba(0,0,0,0.8);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .book-spine-label {
+      writing-mode: vertical-rl;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      font-size: 0.72rem;
+      color: #111;
+    }
+
+    .book-details-title {
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .book-details-text {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .book-tagline {
+      font-size: 0.82rem;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+
+    /* Bio / trust */
+    .bio {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 2.2rem;
+      align-items: center;
+    }
+
+    .bio-tag {
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.7rem;
+    }
+
+    .bio-title {
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      margin-bottom: 0.7rem;
+    }
+
+    .bio-text {
+      font-size: 0.93rem;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+
+    .bio-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .bio-card {
+      border-radius: 1.2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1.4rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .bio-name {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 1.6rem 1.4rem 2.4rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      text-decoration: underline;
+      text-decoration-color: rgba(255,255,255,0.1);
+      text-underline-offset: 0.15em;
+    }
+
+    /* Layout responsive */
+    @media (max-width: 880px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 2.4rem;
+      }
+      .hero-visual {
+        order: -1;
+      }
+      .benefits-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .books-grid,
+      .bio {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .books-card {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .products-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .products-note {
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        padding-inline: 1rem;
+      }
+      .nav-links {
+        display: none;
+      }
+      .nav-cta {
+        padding-inline: 1rem;
+      }
+      .section {
+        padding-inline: 1rem;
+      }
+      .products-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .hero-actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <nav class="nav">
+        <div class="logo">
+          <span class="logo-mark"></span>
+          <span>FLATCER</span>
+        </div>
+        <div class="nav-links">
+          <a href="#prodotti">Prodotti</a>
+          <a href="#libri">Libri &amp; filosofia</a>
+          <a href="#bio">Chi sono</a>
+        </div>
+        <button class="nav-cta" onclick="scrollToSection('prodotti')">
+          Scopri i prodotti
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="section">
+        <div class="container hero">
+          <div>
+            <div class="hero-kicker">Design 3D &amp; filosofia pratica</div>
+            <h1 class="hero-title">
+              Oggetti <span>3D</span> che trasformano la tua quotidianità.
+            </h1>
+            <p class="hero-sub">
+              Progetto e stampo oggetti minimal per casa, lavoro e creatività.
+              Pochi pezzi, pensati bene: per chi non vuole più vivere in modalità standard.
+            </p>
+            <div class="hero-actions">
+              <button class="btn-primary" onclick="scrollToSection('prodotti')">
+                Scopri i prodotti
+              </button>
+              <button class="btn-ghost" onclick="scrollToSection('libri')">
+                Preferisci le idee agli oggetti? Entra nei libri &amp; filosofia
+              </button>
+            </div>
+            <p class="hero-note">
+              Ogni pezzo finanzia nuovi prototipi, libri e sperimentazioni. <span>Flatcer</span> è un laboratorio continuo.
+            </p>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-product">
+              <div class="hero-block">
+                <div class="hero-strip">
+                  <div class="hero-strip-inner"></div>
+                </div>
+              </div>
+              <div class="hero-tag">
+                <span class="hero-tag-dot"></span>
+                <span>Stampato in Italia • 3D</span>
+              </div>
+            </div>
+            <div class="hero-meta">
+              <div class="hero-meta-left">
+                <span>Flatcer Studio</span>
+                <span>Oggetti 3D &amp; libri</span>
+              </div>
+              <div class="hero-meta-right">
+                <span class="hero-dot-small"></span>
+                <span>Esperienza ottimizzata per desktop &amp; mobile</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BENEFITS -->
+      <section class="section">
+        <div class="container">
+          <div class="section-title">Perché Flatcer</div>
+          <h2 class="section-heading">Per chi è questo laboratorio</h2>
+          <div class="benefits-grid">
+            <div class="benefit-card">
+              <div class="benefit-label">Uso quotidiano</div>
+              <div class="benefit-title">Oggetti che lavorano con te</div>
+              <p class="benefit-text">
+                Accessori 3D pensati per casa e lavoro: organizzano, semplificano, ti fanno risparmiare tempo senza riempire lo spazio.
+              </p>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-label">Estetica minimal</div>
+              <div class="benefit-title">Design pulito, zero rumore</div>
+              <p class="benefit-text">
+                Linee essenziali, palette ridotta, attenzione ai dettagli. Ogni pezzo è progettato per integrarsi, non per urlare.
+              </p>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-label">Filosofia</div>
+              <div class="benefit-title">Pensiero dietro ogni forma</div>
+              <p class="benefit-text">
+                Ogni oggetto nasce da una domanda: “Perché ti serve davvero?”. La stessa filosofia vive nei libri e nei contenuti che scrivo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRODUCTS -->
+      <section id="prodotti" class="section products-section">
+        <div class="container">
+          <div class="products-header">
+            <div>
+              <div class="section-title">Prodotti</div>
+              <h2 class="section-heading">I pezzi scelti per iniziare</h2>
+            </div>
+            <p class="products-note">
+              Pochi oggetti, selezionati. Questa è una collezione viva: alcuni pezzi restano, altri spariscono. Se qualcosa ti parla, prendilo ora.
+            </p>
+          </div>
+
+          <div class="products-grid">
+            <!-- Prodotto 1 -->
+            <article class="product-card">
+              <div class="product-thumb">
+                <span class="product-pill">Best seller</span>
+                <span>Supporto da scrivania<br />per tenere tutto al suo posto.</span>
+              </div>
+              <h3 class="product-title">Desk Flow Organizer</h3>
+              <p class="product-desc">
+                Un vassoio 3D modulare che raccoglie penne, cavi e piccoli oggetti in un’unica linea pulita. Zero caos visivo, più focus.
+              </p>
+              <div class="product-footer">
+                <div class="product-price">
+                  29€ <span>/ stampa su richiesta</span>
+                </div>
+                <button class="product-btn" onclick="openShop()">
+                  Vedi il prodotto
+                </button>
+              </div>
+            </article>
+
+            <!-- Prodotto 2 -->
+            <article class="product-card">
+              <div class="product-thumb">
+                <span class="product-pill">Nuovo</span>
+                <span>Set di vassoi minimal<br />per casa e cucina.</span>
+              </div>
+              <h3 class="product-title">Everyday Trays Set</h3>
+              <p class="product-desc">
+                Tre vassoi stampati 3D per chi ama superfici pulite: chiavi, spezie, piccoli oggetti. Ogni cosa al suo posto, in modo elegante.
+              </p>
+              <div class="product-footer">
+                <div class="product-price">
+                  39€ <span>/ set</span>
+                </div>
+                <button class="product-btn" onclick="openShop()">
+                  Vedi il prodotto
+                </button>
+              </div>
+            </article>
+
+            <!-- Prodotto 3 -->
+            <article class="product-card">
+              <div class="product-thumb">
+                <span class="product-pill">Limited</span>
+                <span>Lampada da tavolo 3D<br />per angoli di calma.</span>
+              </div>
+              <h3 class="product-title">Light Dot Sculpture</h3>
+              <p class="product-desc">
+                Una piccola lampada/scultura 3D che disegna una luce morbida sul cemento o sul legno. Per chi vuole un punto di calma visiva.
+              </p>
+              <div class="product-footer">
+                <div class="product-price">
+                  59€ <span>/ edizione limitata</span>
+                </div>
+                <button class="product-btn" onclick="openShop()">
+                  Vedi il prodotto
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <div class="products-cta">
+            <button class="btn-primary" onclick="openShop()">
+              Vedi tutti i prodotti
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- BOOKS & PHILOSOPHY -->
+      <section id="libri" class="section">
+        <div class="container books-grid">
+          <div>
+            <div class="books-tag">Libri &amp; filosofia</div>
+            <h2 class="books-title">Il pensiero dietro agli oggetti</h2>
+            <p class="books-text">
+              Oltre agli oggetti, scrivo di leggerezza, creatività e progettazione della propria vita come se fosse un progetto di design.
+              Libri, articoli brevi e riflessioni nate tra una stampa 3D e una ricetta.
+            </p>
+            <ul class="books-list">
+              <li>Libri su creatività, lavoro e quotidianità progettata.</li>
+              <li>Pensieri brevi: filosofia pratica, senza pesantezza.</li>
+              <li>Newsletter mensile con idee e dietro le quinte del laboratorio.</li>
+            </ul>
+            <button class="btn-ghost" onclick="openBooks()">
+              Entra nei libri &amp; filosofia
+            </button>
+          </div>
+
+          <div class="books-card">
+            <div class="book-spine">
+              <div class="book-spine-label">Flatcer · Design, 3D &amp; leggerezza</div>
+            </div>
+            <div>
+              <div class="book-details-title">Libro 01 – titolo provvisorio</div>
+              <p class="book-details-text">
+                Il primo libro Flatcer nasce dall’incrocio tra cucina, design 3D e vita reale.
+                Un viaggio in cui ogni capitolo è un oggetto, una storia e una domanda da farti.
+              </p>
+              <div class="book-tagline">
+                “Meno cose, più senso. Meno rumore, più forma.”
+              </div>
+              <p class="book-details-text">
+                Presto disponibile. Nel frattempo puoi iscriverti per ricevere anteprime e pensieri brevi dal laboratorio.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BIO / TRUST -->
+      <section id="bio" class="section">
+        <div class="container bio">
+          <div>
+            <div class="bio-tag">Chi c'è dietro</div>
+            <h2 class="bio-title">Un imprenditore, uno chef, un maker</h2>
+            <p class="bio-text">
+              Flatcer nasce dall’incrocio tra cucina gourmet, stampa 3D e voglia di raccontare storie.
+              Progetto oggetti, ricette e percorsi che hanno una cosa in comune: rendere la vita più leggera, senza togliere profondità.
+            </p>
+            <p class="bio-text">
+              Nel laboratorio Flatcer ogni cosa è un esperimento:
+              una nuova forma, un diverso modo di usare un oggetto, un pensiero che diventa pagina.
+            </p>
+            <p class="bio-note">
+              Se vuoi proporre un progetto, una collaborazione o un evento, trovi i contatti nel footer.
+            </p>
+          </div>
+          <div class="bio-card">
+            <div class="bio-name">Flatcer Studio</div>
+            <p>
+              Design 3D stampato, oggetti per casa e lavoro, libri e contenuti sulla creatività quotidiana.
+              Basato in Lombardia, ma con la testa sempre un po’ più in là del tavolo da lavoro.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <div>© <span id="year"></span> Flatcer. Tutti i diritti riservati.</div>
+        <div class="footer-links">
+          <a href="#prodotti">Prodotti</a>
+          <a href="#libri">Libri &amp; filosofia</a>
+          <a href="#bio">Chi sono</a>
+          <!-- Sostituisci con i tuoi social reali -->
+          <a href="https://www.instagram.com/" target="_blank" rel="noreferrer">Instagram</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    function scrollToSection(id) {
+      var el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function openShop() {
+      // TODO: sostituisci con URL reale dello shop (Etsy o altro)
+      window.open('https://www.etsy.com', '_blank');
+    }
+
+    function openBooks() {
+      // TODO: sostituisci con URL reale della pagina libri / newsletter
+      window.location.href = '#libri';
+    }
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
